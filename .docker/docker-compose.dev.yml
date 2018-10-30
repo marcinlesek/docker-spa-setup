@@ -1,0 +1,11 @@
+version: '3.6'
+
+services:
+  client:
+    image: node:carbon-alpine
+    volumes:
+      - ..:/opt/app:cached
+    ports:
+      - "${NODE_PORT}:${NODE_PORT}"
+    working_dir: /opt/app
+    command: "/bin/sh -c 'yarn install --frozen-lockfile --production=false; yarn start'"

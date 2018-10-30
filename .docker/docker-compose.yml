@@ -1,0 +1,6 @@
+version: '3.6'
+
+services:
+  client:
+    env_file:
+      - .env
