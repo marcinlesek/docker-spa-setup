@@ -113,7 +113,7 @@ Okay, we set up our own local machine, so we had all the tools we need to start 
 
 ### <a name="dockerfile-on-dev"></a>Dockerfile on development env? Oh please no...
 
-![Oh god, please no!](https://media.giphy.com/media/d10dMmzqCYqQ0/giphy.gif)
+![Oh god, please no!](https://pics.me.me/no-god-please-21245703.png)
 
 Some of you will probably not agree with me, but I will try to convince you, that **using Dockerfile on development environment isn't the best way** you could choose (if not necessary, of course), but sometimes it's must have, but let's say it officially: in most examples, **is not**.
 
@@ -365,7 +365,7 @@ Successfully built 0977583c3825
 Successfully tagged my-app-spa_client:latest
 Starting my-app-spa_client_1 ... done
 ```
-Now, you could check your site locally entering `localhost:{NGINX_PORT} and officially say **hello my production app**! Whoooa!
+Now, you could check your site locally entering `localhost:{NGINX_PORT}` and officially say **hello my production app**! Whoooa!
 
 ## <a name="extras"></a>Extras
 
