@@ -59,7 +59,7 @@ I have bolded more important information which will help you understand how it w
 
 >Available for both Linux and Windows-based applications, the containerized software will **always run the same, regardless of the infrastructure**. Containers **isolate software from its environment and ensure that it works uniformly despite differences for instance** between development and staging.
 
-![](../../static/img/what-is-container.png)
+![](static/img/what-is-container.png)
 
 Always the same result, bypassing the infrastructure. It is a result of Docker way of working, shown above on architecture scheme. For more details, check [What is a Container](https://www.docker.com/resources/what-container) where you can find great basics.
 
