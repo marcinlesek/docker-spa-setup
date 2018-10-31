@@ -1,10 +1,6 @@
----
-title: Dev & prod ready Docker setup for SPA app
-subTitle: Simple and light env setup to run SPA apps on various configurations with Docker multi-stage build
-tags: ["Docker", "Docker Compose", "multi-stage", "environment", "build", "setup", "production", "SPA", "React", "Angular", "Vue", "guide", "tutorial"]
-cover: /img/docker.png
-postAuthor: Marcin Łesek (@marcinlesek)
----
+# Dev & prod ready Docker setup for SPA app
+
+### Simple and light env setup to run SPA apps on various configurations with Docker multi-stage build
 
 PS. If you're familiar with Docker and don't need a step by step guide, check only [Multiple compose files](#multi-compose-files), [Configure it](#configure-it) and [Magic of multi-stage build](#magic). Code is available on [GitHub](https://github.com/marcinlesek/docker-spa-setup).
 
