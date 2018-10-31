@@ -191,7 +191,7 @@ services:
 Describe a bit more this little magic:
 
 * `image:` - here we're specifying that we want to use an image with predefined `node.js` in `carbon` (`8.x`) version. Based on this image, Docker will build a container for our application (`client`),
-* `volumes:` - this allows us to mount some data volume (we don't need to data, because we mount data from our host to container) as `HOST:CONTAINER` path. So we're mounting `..` from the host (project root directory) to `/opt/app` in our container. We also add `:cached` to improve Mac's performance. More details about it [here](https://docs.docker.com/docker-for-mac/osxfs-caching/#cached).
+* `volumes:` - this allows us to mount some data volume (we don't need to copy, because we mount data from our host to container) as `HOST:CONTAINER` path. So we're mounting `..` from the host (project root directory) to `/opt/app` in our container. We also add `:cached` to improve Mac's performance. More details about it [here](https://docs.docker.com/docker-for-mac/osxfs-caching/#cached).
 * `ports:` - here we assign port from our host to port in our container (`HOST:CONTAINER`), so we could access our container from outside e.g. `5000:5000` maps port `5000` from host to port `5000` in the container. We could also parametrize these values so we're getting them from env variables,
 * `working_dir:` - specifies root app directory, where `docker-compose` will be working,
 * `command:` - command which will run our container. We're passing to shell our commands (via `/bin/sh -c`), which firstly installs dependencies with frozen lockfile (don't generate new `yarn.lockfile` and download the same versions) and forces production flag to false (be sure, that `devDependencies` also will be installed).
@@ -236,7 +236,7 @@ Starting my-app-spa_client_1 ... done
 
 ## <a name="prod-env"></a>Production time
 
-Now we can assume that few sprints of developmenthave passed and you have your dream *MVP ready to production*. But only development environment is working now - it's heavy, not optimized and with a lot of unneeded logs.
+Now we can assume that few sprints of development have passed and you have your dream *MVP ready to production*. But only development environment is working now - it's heavy, not optimized and with a lot of unneeded logs.
 Let's change it!
 
 ### <a name="configure-it"></a>Configure it
