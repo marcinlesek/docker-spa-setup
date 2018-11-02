@@ -81,18 +81,18 @@ Firstly, we need to set up our basic app. Of course in the bigger project, we'll
 Create our boiler template app:
 
 ```bash
-$ npx create-react-app my-app
+$ yarn create react-app docker-spa-setup
 ```
 
 After that, we should see a message like this:
 
 ```bash
-Success! Created my-app at /path/to/my-app
+Success! Created docker-spa-setup at /path/to/docker-spa-setup
 ```
 
 Now, let's run our hello world application:
 ```bash
-$ cd my-app
+$ cd docker-spa-setup
 $ yarn start
 ```
 
@@ -191,7 +191,7 @@ services:
 Describe a bit more this little magic:
 
 * `image:` - here we're specifying that we want to use an image with predefined `node.js` in `carbon` (`8.x`) version. Based on this image, Docker will build a container for our application (`client`),
-* `volumes:` - this allows us to mount some data volume (we don't need to data, because we mount data from our host to container) as `HOST:CONTAINER` path. So we're mounting `..` from the host (project root directory) to `/opt/app` in our container. We also add `:cached` to improve Mac's performance. More details about it [here](https://docs.docker.com/docker-for-mac/osxfs-caching/#cached).
+* `volumes:` - this allows us to mount some data volume (we don't need to copy, because we mount data from our host to container) as `HOST:CONTAINER` path. So we're mounting `..` from the host (project root directory) to `/opt/app` in our container. We also add `:cached` to improve Mac's performance. More details about it [here](https://docs.docker.com/docker-for-mac/osxfs-caching/#cached).
 * `ports:` - here we assign port from our host to port in our container (`HOST:CONTAINER`), so we could access our container from outside e.g. `5000:5000` maps port `5000` from host to port `5000` in the container. We could also parametrize these values so we're getting them from env variables,
 * `working_dir:` - specifies root app directory, where `docker-compose` will be working,
 * `command:` - command which will run our container. We're passing to shell our commands (via `/bin/sh -c`), which firstly installs dependencies with frozen lockfile (don't generate new `yarn.lockfile` and download the same versions) and forces production flag to false (be sure, that `devDependencies` also will be installed).
@@ -204,7 +204,7 @@ Firstly, let's add `.env` template file called `.env.dev.dist`!
 
 ```apacheconf
 # .env.dev.dist
-COMPOSE_PROJECT_NAME=my-app-spa
+COMPOSE_PROJECT_NAME=docker-spa-setup
 COMPOSE_FILE=docker-compose.yml:docker-compose.dev.yml
 NODE_ENV=development
 NODE_PORT=3000
@@ -229,14 +229,14 @@ Yeah! Now with this `docker-compose.dev.yml` and the `.env` file we're able to s
 
 ```bash
 $ docker-compose up -d
-Starting my-app-spa_client_1 ... done
+Starting docker-spa-setup_client_1 ... done
 ```
 
 **Congratulations**! You **set up your development** environment.
 
 ## <a name="prod-env"></a>Production time
 
-Now we can assume that few sprints of developmenthave passed and you have your dream *MVP ready to production*. But only development environment is working now - it's heavy, not optimized and with a lot of unneeded logs.
+Now we can assume that few sprints of development have passed and you have your dream *MVP ready to production*. But only development environment is working now - it's heavy, not optimized and with a lot of unneeded logs.
 Let's change it!
 
 ### <a name="configure-it"></a>Configure it
@@ -292,7 +292,7 @@ Nothing special, but this must be kept in mind.
 
 ```apacheconf
 # .env.prod.dist
-COMPOSE_PROJECT_NAME=my-app-spa
+COMPOSE_PROJECT_NAME=docker-spa-setup
 COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml
 NODE_ENV=production
 NGINX_PORT=80
@@ -410,8 +410,8 @@ Step 2/10 : RUN mkdir /opt/app
 ...
 
 Successfully built 0977583c3825
-Successfully tagged my-app-spa_client:latest
-Starting my-app-spa_client_1 ... done
+Successfully tagged docker-spa-setup_client:latest
+Starting docker-spa-setup_client_1 ... done
 ```
 Now, you could check your site locally entering `localhost:{NGINX_PORT}` and officially say **hello my production app**! Whoooa!
 
