@@ -81,18 +81,18 @@ Firstly, we need to set up our basic app. Of course in the bigger project, we'll
 Create our boiler template app:
 
 ```bash
-$ npx create-react-app my-app
+$ yarn create react-app docker-spa-setup
 ```
 
 After that, we should see a message like this:
 
 ```bash
-Success! Created my-app at /path/to/my-app
+Success! Created docker-spa-setup at /path/to/docker-spa-setup
 ```
 
 Now, let's run our hello world application:
 ```bash
-$ cd my-app
+$ cd docker-spa-setup
 $ yarn start
 ```
 
@@ -204,7 +204,7 @@ Firstly, let's add `.env` template file called `.env.dev.dist`!
 
 ```apacheconf
 # .env.dev.dist
-COMPOSE_PROJECT_NAME=my-app-spa
+COMPOSE_PROJECT_NAME=docker-spa-setup
 COMPOSE_FILE=docker-compose.yml:docker-compose.dev.yml
 NODE_ENV=development
 NODE_PORT=3000
@@ -229,7 +229,7 @@ Yeah! Now with this `docker-compose.dev.yml` and the `.env` file we're able to s
 
 ```bash
 $ docker-compose up -d
-Starting my-app-spa_client_1 ... done
+Starting docker-spa-setup_client_1 ... done
 ```
 
 **Congratulations**! You **set up your development** environment.
@@ -292,7 +292,7 @@ Nothing special, but this must be kept in mind.
 
 ```apacheconf
 # .env.prod.dist
-COMPOSE_PROJECT_NAME=my-app-spa
+COMPOSE_PROJECT_NAME=docker-spa-setup
 COMPOSE_FILE=docker-compose.yml:docker-compose.prod.yml
 NODE_ENV=production
 NGINX_PORT=80
@@ -410,8 +410,8 @@ Step 2/10 : RUN mkdir /opt/app
 ...
 
 Successfully built 0977583c3825
-Successfully tagged my-app-spa_client:latest
-Starting my-app-spa_client_1 ... done
+Successfully tagged docker-spa-setup_client:latest
+Starting docker-spa-setup_client_1 ... done
 ```
 Now, you could check your site locally entering `localhost:{NGINX_PORT}` and officially say **hello my production app**! Whoooa!
 
