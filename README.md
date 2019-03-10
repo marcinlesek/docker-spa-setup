@@ -38,9 +38,9 @@ Take a look for this simple React app structure:
 
 ```
   .
-  ├── /build/                     # The folder for compiled production ready output
+  ├── /build/                     # The folder for compiled production ready output (artifact)
   ├── /node_modules/              # 3rd-party libraries and utilities
-  ├── /src/                       # The source code of the application
+  ├── /src/                       # The source code of the application (source)
   │   ├── /components/            
   │   ├── /routes/                
   │   ├── /styles/                
@@ -51,8 +51,9 @@ Take a look for this simple React app structure:
   └── ...                          
 ```
 
-The whole `/src` folder is our app's heart - main code that we're developing. Running applications locally, on development environment by some `webpack-dev-server` or another serving tool, gives us an opportunity to have *hot module reload*, *live preview*, *fast run* etc.
-It's really good for development purpose and we'll use it!
+The whole `/src` (source) folder is our app's heart - main code that we're developing. Running applications locally, on development environment by some `webpack-dev-server` or another serving tool, gives us an opportunity to have *hot module reload*, *live preview*, *fast run* etc.
+It's really good for development purpose and we'll use it! 
+On the other side, `/build` directory contains prepared production ready code (artifact), which we'll deploy on servers.
 
 ### <a name="docker"></a>Docker, wtf is that?
 
