@@ -193,9 +193,9 @@ Describe a bit more this little magic:
 
 * `image:` - here we're specifying that we want to use an image with predefined `node.js` in `carbon` (`8.x`) version. Based on this image, Docker will build a container for our application (`client`),
 * `volumes:` - this allows us to mount some data volume (we don't need to copy, because we mount data from our host to container) as `HOST:CONTAINER` path. So we're mounting `..` from the host (project root directory) to `/opt/app` in our container. We also add `:cached` to improve Mac's performance. More details about it [here](https://docs.docker.com/docker-for-mac/osxfs-caching/#cached).
-* `ports:` - here we assign port from our host to port in our container (`HOST:CONTAINER`), so we could access our container from outside e.g. `5000:5000` maps port `5000` from host to port `5000` in the container. We could also parametrize these values so we're getting them from env variables,
+* `ports:` - here we assign port from our host to port in our container (`HOST:CONTAINER`), so we could access our container from outside e.g. `3000:6000` maps port `3000` from host to port `6000` in the container. We could also parametrize these values so we're getting them from env variables,
 * `working_dir:` - specifies root app directory, where `docker-compose` will be working,
-* `command:` - command which will run our container. We're passing to shell our commands (via `/bin/sh -c`), which firstly installs dependencies with frozen lockfile (don't generate new `yarn.lockfile` and download the same versions) and forces production flag to false (be sure, that `devDependencies` also will be installed).
+* `command:` - command which will run our container. We're passing to shell our commands (via `/bin/sh -c`), which firstly installs dependencies with frozen lockfile (don't generate new `yarn.lock` file and download the same versions) and forces production flag to false (be sure, that `devDependencies` also will be installed).
 
 ### <a name="default-env-vars"></a>Default environment variables
 
@@ -215,8 +215,8 @@ We added few environment variables:
 
 * `COMPOSE_PROJECT_NAME` - set our project name, it will be used as a prefix for creating our services containers later, so it should be short and intuitive,
 * `COMPOSE_FILE` - this one is due to the fact, that we want to use multiple compose files. We specify which files should be overridden and by which one. By this variable, we could setup it per application environment, but about this will be later. Syntax looks like: `base:override1:override2` etc.,
-* `NODE_ENV` will be used in our app to specify in which environment we're now, like development or production,
-* `NODE_PORT` to easily change the exposed port from our service container, now we set it as default `3000`,
+* `NODE_ENV` - will be used in our app to specify in which environment we're now, like development or production,
+* `NODE_PORT` - to easily change the exposed port from our service container, now we set it as default `3000`,
 
 Our template is ready, we need to copy it to *proper* `.env` file:
 
@@ -257,6 +257,7 @@ services:
       - ${NGINX_PORT}:80
     restart: unless-stopped
 ```
+
 As you can see, it's changed a lot from `dev` version, so nothing could be passed up to our base `docker-compose.yml` file.
 Now we'll be using the build process rather than a ready-made image from Docker Hub and [nginx](http://nginx.org/) to serve our app.
 Of course, you could also use [Apache](https://httpd.apache.org/) or another HTTP server.
@@ -414,11 +415,12 @@ Successfully built 0977583c3825
 Successfully tagged docker-spa-setup_client:latest
 Starting docker-spa-setup_client_1 ... done
 ```
+
 Now, you could check your site locally entering `localhost:{NGINX_PORT}` and officially say **hello my production app**! Whoooa!
 
 ## <a name="extras"></a>Extras
 
-I hope this post will help you to understand how **multi-stage build** works and how you could use it to improve your SPA app (not that it won't work perfectly well for API too, but it's probably a topic for another post probably).
+I hope this post will help you to understand how **multi-stage build** works and how you could use it to improve your SPA app (note that it won't work perfectly well for API too, but it's probably a topic for another post probably).
 You could find a working code on my [GitHub](https://github.com/marcinlesek/docker-spa-setup), so don't hesitate to check it if you'll force some troubles with this guide or ask me some questions here or on my [Twitter](https://twitter.com/marcinlesek), I will try to help you. :)
 
 I also leave here some helpful links (some basics and some advanced a bit, used to create this article and also mentioned above), but to be honest, the best way to learn Docker, is diggin' into it and checking their documentation, which is so great!
