@@ -14,7 +14,7 @@ PS. If you're familiar with Docker and don't need a step by step guide, check on
   - [Install base tools - Docker & docker-compose](#install-tools)
 - [Start development environment](#dev-env)
   - [Dockerfile on development env? Oh please no...](#dockerfile-on-dev)
-  - [Multiple compose files](#multi-compose-files)
+  - [One to rule them all? Not here baby, multiple compose files](#multi-compose-files)
   - [Default environment variables](#default-env-vars)
   - [Rocket launch!](#rocket-launch)
 - [Production time](#prod-env)
@@ -27,7 +27,7 @@ PS. If you're familiar with Docker and don't need a step by step guide, check on
 
 Nowadays, frontend applications have a lot of dependencies (everyone knows these funny memes about the size of `node_modules` directory) and ways to be successfully started, deployed and built, so it's not a piece of cake. 
 I think everyone started with client apps where we're editing files live on production and probably everything was in one file, or if not, the whole files were available from the client side.
-Fortunately, those times is gone, for most of us. :)
+Fortunately, those times is gone, for most of us. :sweat_smile:
 
 ### <a name="source-vs-artifact"></a>Source vs. Artifact
 
@@ -38,9 +38,9 @@ Take a look for this simple React app structure:
 
 ```
   .
-  ├── /build/                     # The folder for compiled production ready output
+  ├── /build/                     # The folder for compiled production ready output (artifact)
   ├── /node_modules/              # 3rd-party libraries and utilities
-  ├── /src/                       # The source code of the application
+  ├── /src/                       # The source code of the application (source)
   │   ├── /components/            
   │   ├── /routes/                
   │   ├── /styles/                
@@ -51,10 +51,11 @@ Take a look for this simple React app structure:
   └── ...                          
 ```
 
-The whole `/src` folder is our app's heart - main code that we're developing. Running applications locally, on development environment by some `webpack-dev-server` or another serving tool, gives us an opportunity to have *hot module reload*, *live preview*, *fast run* etc.
-It's really good for development purpose and we'll use it!
+The whole `/src` (source) folder is our app's heart - main code that we're developing. Running applications locally, on development environment by some `webpack-dev-server` or another serving tool, gives us an opportunity to have *hot module reload*, *live preview*, *fast run* etc.
+It's really good for development purpose and we'll use it! 
+On the other side, `/build` directory contains prepared production ready code (artifact), which we'll deploy on servers.
 
-### <a name="docker"></a>Docker, wtf is that?
+### <a name="docker"></a>Docker, wtf is that? :whale:
 
 I know, you probably know what is Docker and how it works, but if not, let me show you the short quote from [What is a Container](https://www.docker.com/resources/what-container) which is a great definition of Docker base block.
 
@@ -71,7 +72,7 @@ Always the same result, bypassing the infrastructure.
 It is a result of the way Docker works, shown above on architecture scheme.
 For more details, check [What is a Container](https://www.docker.com/resources/what-container).
 
-## <a name="own-playground"></a>Prepare your own playground
+## <a name="own-playground"></a>Prepare your own playground :construction:
 
 We'll start with setting up our development environment based on **Docker** & **docker-compose** and `create-react-app` template.
 Firstly, we need to set up our basic app. Of course in the bigger project, we'll have many more dependencies, services and complexity but the problem solution is almost the same.
@@ -99,10 +100,10 @@ $ yarn start
 After a few seconds, we should see information regarding successfully compiled and served under `localhost:3000`, with all things we need to easily develop an app.
 Great! 
 
-### <a name="install-tools"></a>Install base tools - Docker & docker-compose
+### <a name="install-tools"></a>Install base tools :wrench: - Docker & docker-compose
 
-Now the real fun begins.
-Next things that we'll need will be `docker` and `docker-compose`.
+Now the real fun begins. :tada:
+Next things that we'll need will be `docker` and `docker-compose` (oh, captain obvious! :scream:).
 This tutorial was written using:
 
 ```bash
@@ -131,7 +132,7 @@ Of course, you're right, but let me explain about it a bit more...
 
 ![Oh god, please no!](https://pics.me.me/no-god-please-21245703.png)
 
-Some of you will probably not agree with me, but I will try to convince you, that **using Dockerfile on development environment isn't the best way** you could choose (if not necessary, of course) - sometimes it's a must have, but let's say it officially: in most cases, **it's not**.
+Some of you will probably not agree with me, but I will try to convince you, that **using Dockerfile on development environment isn't the best way** you could choose (if not necessary, of course) - sometimes it's a must have, but let's say it officially: in most cases, **it's not**. :no_entry_sign:
 
 Dockerfile allows us to create a custom Docker image for our container from an existing one and add our changes to the build process.
 It's great, even we'll be using it here in next chapters, but **in production setup**, where *optimization, security and light-weight* of the app is **crucial**. 
@@ -144,7 +145,7 @@ Benefits?
 
 Be lighter and flexible, especially on the development environment, when you need this a lot with continuous changes you're making.
 
-### <a name="multi-compose-files"></a>Multiple compose files
+### <a name="multi-compose-files"></a>One to rule them all? :ring: Not here baby, multiple compose files
 
 Firstly, what is `multiple compose files`?
 By default, our docker-compose will read base `docker-compose.yml` file which according to the convention, it should be our base configuration, which **will be shared over all environments**.
@@ -192,15 +193,15 @@ Describe a bit more this little magic:
 
 * `image:` - here we're specifying that we want to use an image with predefined `node.js` in `carbon` (`8.x`) version. Based on this image, Docker will build a container for our application (`client`),
 * `volumes:` - this allows us to mount some data volume (we don't need to copy, because we mount data from our host to container) as `HOST:CONTAINER` path. So we're mounting `..` from the host (project root directory) to `/opt/app` in our container. We also add `:cached` to improve Mac's performance. More details about it [here](https://docs.docker.com/docker-for-mac/osxfs-caching/#cached).
-* `ports:` - here we assign port from our host to port in our container (`HOST:CONTAINER`), so we could access our container from outside e.g. `5000:5000` maps port `5000` from host to port `5000` in the container. We could also parametrize these values so we're getting them from env variables,
+* `ports:` - here we assign port from our host to port in our container (`HOST:CONTAINER`), so we could access our container from outside e.g. `3000:6000` maps port `3000` from host to port `6000` in the container. We could also parametrize these values so we're getting them from env variables,
 * `working_dir:` - specifies root app directory, where `docker-compose` will be working,
-* `command:` - command which will run our container. We're passing to shell our commands (via `/bin/sh -c`), which firstly installs dependencies with frozen lockfile (don't generate new `yarn.lockfile` and download the same versions) and forces production flag to false (be sure, that `devDependencies` also will be installed).
+* `command:` - command which will run our container. We're passing to shell our commands (via `/bin/sh -c`), which firstly installs dependencies with frozen lockfile (don't generate new `yarn.lock` file and download the same versions) and forces production flag to false (be sure, that `devDependencies` also will be installed).
 
 ### <a name="default-env-vars"></a>Default environment variables
 
 For now, our Docker setup won't do anything useful for us.
 Also, if you'll try now to run it, compose will warn you about lack of image or build source.
-Firstly, let's add `.env` template file called `.env.dev.dist`!
+Firstly, let's add `.env` template file called `.env.dev.dist`! :smirk:
 
 ```apacheconf
 # .env.dev.dist
@@ -214,8 +215,8 @@ We added few environment variables:
 
 * `COMPOSE_PROJECT_NAME` - set our project name, it will be used as a prefix for creating our services containers later, so it should be short and intuitive,
 * `COMPOSE_FILE` - this one is due to the fact, that we want to use multiple compose files. We specify which files should be overridden and by which one. By this variable, we could setup it per application environment, but about this will be later. Syntax looks like: `base:override1:override2` etc.,
-* `NODE_ENV` will be used in our app to specify in which environment we're now, like development or production,
-* `NODE_PORT` to easily change the exposed port from our service container, now we set it as default `3000`,
+* `NODE_ENV` - will be used in our app to specify in which environment we're now, like development or production,
+* `NODE_PORT` - to easily change the exposed port from our service container, now we set it as default `3000`,
 
 Our template is ready, we need to copy it to *proper* `.env` file:
 
@@ -223,7 +224,7 @@ Our template is ready, we need to copy it to *proper* `.env` file:
 $ cp .env.dev.dist .env
 ```
 
-### <a name="rocket-launch"></a>Rocket launch!
+### <a name="rocket-launch"></a>Rocket launch! :rocket:
 
 Yeah! Now with this `docker-compose.dev.yml` and the `.env` file we're able to start our app in Docker:
 
@@ -234,7 +235,7 @@ Starting docker-spa-setup_client_1 ... done
 
 **Congratulations**! You **set up your development** environment.
 
-## <a name="prod-env"></a>Production time
+## <a name="prod-env"></a>Production time :star2:
 
 Now we can assume that few sprints of development have passed and you have your dream *MVP ready to production*. But only development environment is working now - it's heavy, not optimized and with a lot of unneeded logs.
 Let's change it!
@@ -256,6 +257,7 @@ services:
       - ${NGINX_PORT}:80
     restart: unless-stopped
 ```
+
 As you can see, it's changed a lot from `dev` version, so nothing could be passed up to our base `docker-compose.yml` file.
 Now we'll be using the build process rather than a ready-made image from Docker Hub and [nginx](http://nginx.org/) to serve our app.
 Of course, you could also use [Apache](https://httpd.apache.org/) or another HTTP server.
@@ -304,7 +306,7 @@ We've three differences between our `.env.dev.dist` file, let's describe them:
 * `NODE_ENV` is set for `production`, it's necessary, because many JavaScript engines, frameworks and libraries check this variable and optimize themselves according to its value,
 * `NGINX_PORT` - new variable instead of `NODE_PORT`, used to specify on which port we want had our production app served from the container by **nginx**.
 
-Nothing hard, isn't it?
+Nothing hard, isn't it? :smile:
 
 ### <a name="magic"></a>Magic of multi-stage build
 
@@ -351,7 +353,7 @@ Let's check what is going on in the second build stage.
 9. **Magic is here!** Now we're copying only our build output from `builder` container (our `node` image where the application was built) to our new container with nginx to default serve location. After this move, Docker **will automatically remove old, not used builder container** and we'll have `nginx:alpine` container with **only built application files** as `client` service. **Amazing**!
 10. A command which will be used to run container, here we're starting nginx with flag `daemon off` so he will be run in the background and serve our application.
 
-Almost done!
+Almost done! :fire:
 
 ### <a name="enter-stage"></a>Enter the stage!
 
@@ -413,11 +415,12 @@ Successfully built 0977583c3825
 Successfully tagged docker-spa-setup_client:latest
 Starting docker-spa-setup_client_1 ... done
 ```
-Now, you could check your site locally entering `localhost:{NGINX_PORT}` and officially say **hello my production app**! Whoooa!
 
-## <a name="extras"></a>Extras
+Now, you could check your site locally entering `localhost:{NGINX_PORT}` and officially say **hello my production app**! Whoooa! :muscle:
 
-I hope this post will help you to understand how **multi-stage build** works and how you could use it to improve your SPA app (not that it won't work perfectly well for API too, but it's probably a topic for another post probably).
+## <a name="extras"></a>Extras :gift:
+
+I hope this post will help you to understand how **multi-stage build** works and how you could use it to improve your SPA app (note that it won't work perfectly well for API too, but it's probably a topic for another post probably).
 You could find a working code on my [GitHub](https://github.com/marcinlesek/docker-spa-setup), so don't hesitate to check it if you'll force some troubles with this guide or ask me some questions here or on my [Twitter](https://twitter.com/marcinlesek), I will try to help you. :)
 
 I also leave here some helpful links (some basics and some advanced a bit, used to create this article and also mentioned above), but to be honest, the best way to learn Docker, is diggin' into it and checking their documentation, which is so great!
